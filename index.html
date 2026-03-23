@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Dwivedi Research Lab at KGMU Lucknow — Advanced MRI, AI diagnostics, super-resolution, PINNs, diffusion MRI, glioma, prostate cancer.">
+<title>KGMU | Dwivedi Research Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: #fafaf8;
+  color: #1e2a3a;
+  line-height: 1.65;
+  font-size: 16px;
+}
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; }
+
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════ */
+:root {
+  --ink:       #1e2a3a;
+  --ink-soft:  #4a5568;
+  --ink-mute:  #718096;
+  --teal:      #0e7490;
+  --teal-mid:  #0891b2;
+  --teal-pale: #e0f2fe;
+  --teal-pastel: #f0f9ff;
+  --sage:      #2d6a4f;
+  --sage-pale: #d8f3dc;
+  --amber:     #b45309;
+  --amber-pale:#fef3c7;
+  --rose:      #9f1239;
+  --rose-pale: #ffe4e6;
+  --purple:    #5b21b6;
+  --purple-pale:#ede9fe;
+  --slate:     #64748b;
+  --border:    #e2e8f0;
+  --border-soft:#f1f5f9;
+  --white:     #ffffff;
+  --cream:     #fafaf8;
+  --cream2:    #f4f4f0;
+  --rule:      #cbd5e1;
+  --max-w:     1080px;
+  --shadow:    0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.05);
+  --shadow-lg: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+}
+
+/* ═══════════════════════════════════════════
+   TYPOGRAPHY
+═══════════════════════════════════════════ */
+h1, h2, h3 { font-family: 'Lora', serif; line-height: 1.2; color: var(--ink); }
+h1 { font-size: 3rem; font-weight: 600; }
+h2 { font-size: 2rem; font-weight: 600; }
+h3 { font-size: 1.2rem; font-weight: 600; }
+p  { color: var(--ink-soft); font-size: 15.5px; line-height: 1.8; }
+
+/* ═══════════════════════════════════════════
+   LAYOUT HELPERS
+═══════════════════════════════════════════ */
+.wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 2rem; }
+.sec  { padding: 5rem 0; }
+.sec-sm { padding: 3.5rem 0; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+
+/* ═══════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════ */
+#nav {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+}
+.nav-wrap {
+  max-width: var(--max-w); margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between; height: 62px;
+}
+.nav-brand { display: flex; align-items: center; gap: 10px; }
+.nav-brand-mark {
+  width: 34px; height: 34px; border-radius: 8px;
+  background: var(--teal); display: flex; align-items: center; justify-content: center;
+  font-family: 'Lora', serif; color: #fff; font-size: 15px; font-weight: 600;
+}
+.nav-brand-text { font-family: 'Lora', serif; font-size: 15px; font-weight: 600; color: var(--ink); letter-spacing: 0.2px; }
+.nav-brand-text span { color: var(--teal); }
+.nav-links { display: flex; align-items: center; gap: 0.25rem; list-style: none; }
+.nav-links a {
+  font-size: 13.5px; font-weight: 500; color: var(--ink-soft);
+  padding: 6px 12px; border-radius: 6px;
+  transition: background 0.18s, color 0.18s;
+}
+.nav-links a:hover { background: var(--teal-pastel); color: var(--teal); }
+.nav-links .nav-btn {
+  background: var(--teal); color: #fff !important; padding: 7px 16px !important;
+  border-radius: 7px !important;
+}
+.nav-links .nav-btn:hover { background: var(--teal-mid) !important; }
+.ham { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+.ham span { display: block; width: 20px; height: 2px; background: var(--ink-soft); margin: 5px 0; border-radius: 2px; }
+
+/* ═══════════════════════════════════════════
+   HERO — light, clean, editorial
+═══════════════════════════════════════════ */
+#hero {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 5.5rem 0 4.5rem;
+  position: relative; overflow: hidden;
+}
+.hero-rule {
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--teal) 0%, #22d3ee 60%, var(--sage) 100%);
+}
+.hero-inner {
+  max-width: var(--max-w); margin: 0 auto; padding: 0 2rem;
+  display: grid; grid-template-columns: 1.35fr 1fr; gap: 4.5rem; align-items: center;
+}
+.hero-kicker {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 1.25rem;
+}
+.hero-kicker::before { content: ''; width: 24px; height: 2px; background: var(--teal); }
+.hero h1 { font-size: 2.9rem; margin-bottom: 1.1rem; color: var(--ink); }
+.hero h1 em { font-style: italic; color: var(--teal); }
+.hero-lead { font-size: 16px; color: var(--ink-soft); line-height: 1.8; margin-bottom: 2rem; }
+.btn-main {
+  display: inline-block; background: var(--teal); color: #fff;
+  padding: 11px 26px; border-radius: 7px; font-size: 14px; font-weight: 600;
+  transition: background 0.18s, transform 0.15s;
+}
+.btn-main:hover { background: var(--teal-mid); transform: translateY(-1px); }
+.btn-ghost {
+  display: inline-block; border: 1.5px solid var(--rule); color: var(--ink-soft);
+  padding: 11px 26px; border-radius: 7px; font-size: 14px; font-weight: 600;
+  margin-left: 0.75rem; transition: border-color 0.18s, color 0.18s;
+}
+.btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
+.hero-facts {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--border); border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+}
+.fact {
+  background: var(--cream); padding: 1.4rem 1.2rem;
+  transition: background 0.18s;
+}
+.fact:hover { background: var(--teal-pastel); }
+.fact-num { font-family: 'Lora', serif; font-size: 2rem; color: var(--teal); font-weight: 600; line-height: 1; }
+.fact-label { font-size: 12px; color: var(--ink-mute); margin-top: 4px; line-height: 1.4; }
+
+/* ═══════════════════════════════════════════
+   NEW RESEARCH BAND
+═══════════════════════════════════════════ */
+#band {
+  background: var(--teal-pastel);
+  border-top: 1px solid #bae6fd; border-bottom: 1px solid #bae6fd;
+  padding: 0.8rem 0; overflow: hidden;
+}
+.band-inner {
+  max-width: var(--max-w); margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; gap: 2rem; overflow-x: auto; scrollbar-width: none;
+}
+.band-inner::-webkit-scrollbar { display: none; }
+.band-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--teal); white-space: nowrap; flex-shrink: 0;
+  padding-right: 1.5rem; border-right: 1px solid #bae6fd;
+}
+.band-item {
+  display: flex; align-items: center; gap: 7px; white-space: nowrap;
+  font-size: 13px; font-weight: 500; color: var(--teal); flex-shrink: 0;
+}
+.band-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal-mid); flex-shrink: 0; }
+
+/* ═══════════════════════════════════════════
+   MISSION — off-white, warm
+═══════════════════════════════════════════ */
+#mission { background: var(--cream2); border-bottom: 1px solid var(--border); }
+.eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--teal); padding-left: 12px; border-left: 3px solid var(--teal); margin-bottom: 1rem;
+}
+.mission-text p { margin-bottom: 1rem; }
+.mission-text p:last-child { margin-bottom: 0; }
+.pillars { display: flex; flex-direction: column; gap: 0.9rem; }
+.pillar {
+  display: flex; gap: 1rem; align-items: flex-start;
+  background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+  padding: 1rem 1.2rem; transition: box-shadow 0.18s, transform 0.18s;
+}
+.pillar:hover { box-shadow: var(--shadow); transform: translateX(3px); }
+.p-icon {
+  width: 40px; height: 40px; border-radius: 9px; background: var(--teal-pale);
+  display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
+}
+.p-icon.sage { background: var(--sage-pale); }
+.p-icon.amber { background: var(--amber-pale); }
+.p-icon.purple { background: var(--purple-pale); }
+.pillar h4 { font-size: 13.5px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+.pillar p { font-size: 12.5px; color: var(--ink-mute); line-height: 1.55; margin: 0; }
+
+/* ═══════════════════════════════════════════
+   FEATURED RESEARCH — white, card-based
+═══════════════════════════════════════════ */
+#featured { background: var(--white); }
+.sec-head { margin-bottom: 2.75rem; }
+.sec-head h2 { margin-top: 0.4rem; }
+.sec-head p { color: var(--ink-mute); font-size: 15px; margin-top: 0.4rem; max-width: 560px; }
+
+/* SR Card */
+.feat-card {
+  background: var(--cream); border: 1px solid var(--border); border-radius: 16px;
+  overflow: hidden; margin-bottom: 1.75rem; display: grid; grid-template-columns: 1.2fr 1fr;
+  box-shadow: var(--shadow);
+}
+.feat-body { padding: 2.5rem; }
+.feat-accent { width: 100%; height: 4px; }
+.feat-tag {
+  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; padding: 4px 12px; border-radius: 24px; margin-bottom: 1rem;
+}
+.ft-teal { background: var(--teal-pale); color: var(--teal); }
+.ft-sage { background: var(--sage-pale); color: var(--sage); }
+.ft-amber { background: var(--amber-pale); color: var(--amber); }
+.ft-purple { background: var(--purple-pale); color: var(--purple); }
+.feat-body h3 { font-size: 1.35rem; margin-bottom: 0.75rem; color: var(--ink); }
+.feat-body p { font-size: 14px; color: var(--ink-soft); line-height: 1.78; }
+.badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 1.1rem; }
+.badge {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 24px; border: 1px solid;
+}
+.b-teal   { background: #e0f2fe; color: #0369a1; border-color: #bae6fd; }
+.b-sage   { background: #d8f3dc; color: #1b4332; border-color: #95d5b2; }
+.b-amber  { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+.b-purple { background: #ede9fe; color: #4c1d95; border-color: #ddd6fe; }
+.b-rose   { background: #ffe4e6; color: #9f1239; border-color: #fecdd3; }
+.b-slate  { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
+
+/* Diagram panel */
+.feat-diag {
+  background: var(--white); border-left: 1px solid var(--border);
+  padding: 2rem; display: flex; flex-direction: column; justify-content: center;
+}
+.diag-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 1.5rem; }
+.d-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; }
+.d-box {
+  background: var(--cream2); border: 1px solid var(--border); border-radius: 8px;
+  padding: 9px 13px; font-size: 12px; font-weight: 600; color: var(--ink-soft); text-align: center; line-height: 1.45;
+}
+.d-box.hi  { background: var(--teal-pale); border-color: #7dd3fc; color: var(--teal); }
+.d-box.pur { background: var(--purple-pale); border-color: #c4b5fd; color: var(--purple); }
+.d-box.grn { background: var(--sage-pale); border-color: #95d5b2; color: var(--sage); }
+.d-box.amb { background: var(--amber-pale); border-color: #fde68a; color: var(--amber); }
+.d-arr { color: var(--rule); font-size: 16px; }
+.d-note { font-size: 11px; color: var(--ink-mute); text-align: center; margin-top: 0.6rem; }
+.d-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
+.d-sep { text-align: center; color: var(--rule); font-size: 16px; margin: 4px 0; }
+
+/* ═══════════════════════════════════════════
+   SHELL + PROSTATE — very light sage / warm
+═══════════════════════════════════════════ */
+#diffusion { background: #f0fdf4; border-top: 1px solid #d1fae5; border-bottom: 1px solid #d1fae5; }
+#diffusion .eyebrow { color: var(--sage); border-left-color: var(--sage); }
+#diffusion h2 { color: var(--ink); }
+.light-diag {
+  background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 1.75rem;
+  box-shadow: var(--shadow);
+}
+.shell-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.shell-key { font-size: 11px; font-weight: 600; color: var(--ink-mute); width: 68px; flex-shrink: 0; line-height: 1.4; }
+.balls { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
+.ball { border-radius: 50%; flex-shrink: 0; }
+.ai-bridge {
+  background: #ecfdf5; border: 1.5px solid #6ee7b7; border-radius: 8px;
+  padding: 9px 14px; font-size: 13px; font-weight: 600; color: var(--sage); text-align: center; margin: 10px 0;
+}
+.mod-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-top: 12px; }
+.mod-tag {
+  background: #f0fdf4; border: 1px solid #a7f3d0; border-radius: 5px;
+  padding: 4px 11px; font-size: 11.5px; font-weight: 600; color: var(--sage);
+}
+
+#prostate { background: #fffbf0; border-top: 1px solid #fde68a; border-bottom: 1px solid #fde68a; }
+#prostate .eyebrow { color: var(--amber); border-left-color: var(--amber); }
+#prostate h2 { color: var(--ink); }
+.hm-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.hm-ico { width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 17px; }
+.hm-t { font-size: 13px; font-weight: 600; color: var(--ink); }
+.hm-s { font-size: 11.5px; color: var(--ink-mute); }
+.hm-plus { text-align: center; color: var(--rule); font-size: 20px; margin: 2px 0; }
+.hm-result {
+  background: var(--amber-pale); border: 1.5px solid #fde68a; border-radius: 9px;
+  padding: 12px 16px; text-align: center; margin-top: 10px;
+}
+.hm-rt { font-size: 13px; font-weight: 700; color: var(--amber); margin-bottom: 3px; }
+.hm-rs { font-size: 11px; color: var(--ink-mute); }
+
+/* ═══════════════════════════════════════════
+   ALL RESEARCH CARDS — light grey bg
+═══════════════════════════════════════════ */
+#projects { background: var(--cream2); border-top: 1px solid var(--border); }
+.r-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 1.6rem;
+  position: relative; overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.r-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--accent-color, var(--teal));
+}
+.r-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.r-ico {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+  margin-bottom: 1rem; background: var(--ico-bg, var(--teal-pale));
+}
+.r-card h3 { font-size: 14.5px; margin-bottom: 0.55rem; line-height: 1.35; }
+.r-card p  { font-size: 13px; color: var(--ink-mute); line-height: 1.7; }
+.rbadges   { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 0.9rem; }
+
+/* ═══════════════════════════════════════════
+   CONTACT — white
+═══════════════════════════════════════════ */
+#contact { background: var(--white); border-top: 1px solid var(--border); }
+.ci-row {
+  display: flex; gap: 1rem; align-items: flex-start;
+  padding: 1rem 1.2rem; background: var(--cream); border: 1px solid var(--border);
+  border-radius: 10px; margin-bottom: 0.8rem; transition: box-shadow 0.18s;
+}
+.ci-row:hover { box-shadow: var(--shadow); }
+.ci-ico {
+  width: 38px; height: 38px; border-radius: 9px; background: var(--teal-pale);
+  display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.ci-label { font-size: 10.5px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 0.8px; }
+.ci-val   { font-size: 13.5px; color: var(--ink); font-weight: 500; margin-top: 1px; }
+.ci-val a { color: var(--teal); }
+.join-panel {
+  background: var(--cream2); border: 1px solid var(--border); border-radius: 16px; padding: 2rem;
+}
+.join-panel h3 { font-size: 1.3rem; margin-bottom: 0.75rem; }
+.join-panel > p { font-size: 14px; color: var(--ink-soft); line-height: 1.75; margin-bottom: 1.25rem; }
+.positions { display: flex; flex-direction: column; gap: 0.55rem; margin-bottom: 1.5rem; }
+.pos {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--white); border: 1px solid var(--border); border-radius: 7px;
+  padding: 9px 13px; font-size: 13.5px; color: var(--ink-soft); font-weight: 500;
+  transition: background 0.15s;
+}
+.pos:hover { background: var(--teal-pastel); }
+.pos-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
+
+/* ═══════════════════════════════════════════
+   FOOTER — dark ink, not harsh black
+═══════════════════════════════════════════ */
+footer {
+  background: #1e2a3a; /* soft dark ink, not full black */
+  padding: 3.5rem 0 2rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-grid {
+  max-width: var(--max-w); margin: 0 auto; padding: 0 2rem;
+  display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 3rem;
+}
+.footer-brand { font-family: 'Lora', serif; color: #e2e8f0; font-size: 17px; margin-bottom: 0.6rem; }
+.footer-desc { font-size: 13px; color: rgba(255,255,255,0.38); line-height: 1.7; }
+.footer-col h4 { font-size: 10.5px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 1rem; }
+.footer-col a { display: block; font-size: 13.5px; color: rgba(255,255,255,0.52); margin-bottom: 0.55rem; transition: color 0.18s; }
+.footer-col a:hover { color: #7dd3fc; }
+.footer-bottom {
+  max-width: var(--max-w); margin: 2.5rem auto 0; padding: 1.5rem 2rem 0;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+}
+.footer-copy { font-size: 12px; color: rgba(255,255,255,0.22); }
+
+/* ═══════════════════════════════════════════
+   FADE-IN ANIMATION
+═══════════════════════════════════════════ */
+.fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade.in { opacity: 1; transform: translateY(0); }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 860px) {
+  .hero-inner, .grid-2, .dark-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .feat-card { grid-template-columns: 1fr; }
+  .feat-diag { border-left: none; border-top: 1px solid var(--border); }
+  h1 { font-size: 2.3rem; }
+  h2 { font-size: 1.7rem; }
+  .grid-3 { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 580px) {
+  .wrap { padding: 0 1.25rem; }
+  h1 { font-size: 2rem; }
+  .grid-3 { grid-template-columns: 1fr; }
+  .hero-facts { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; position: absolute; top: 62px; left: 0; right: 0; background: var(--white); border-bottom: 1px solid var(--border); flex-direction: column; gap: 0; padding: 0.75rem 0; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  .nav-links.open { display: flex; }
+  .nav-links li { width: 100%; }
+  .nav-links a { display: block; padding: 10px 1.5rem; border-radius: 0; }
+  .ham { display: block; }
+  #hero { padding: 3.5rem 0 3rem; }
+  .sec { padding: 3.5rem 0; }
+  .footer-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════
+     NAV
+════════════════════════════════ -->
+<nav id="nav">
+  <div class="nav-wrap">
+    <a href="#" class="nav-brand">
+      <div class="nav-brand-mark">D</div>
+      <div class="nav-brand-text">KGMU · <span>Dwivedi Lab</span></div>
+    </a>
+    <ul class="nav-links" id="navlinks">
+      <li><a href="#mission">Mission</a></li>
+      <li><a href="#featured">Research</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="https://sites.google.com/view/dwivedilab/publications" target="_blank">Publications</a></li>
+      <li><a href="https://sites.google.com/view/dwivedilab/student-job" target="_blank" class="nav-btn">Join the Lab</a></li>
+    </ul>
+    <button class="ham" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════
+     HERO
+════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-rule"></div>
+  <div class="hero-inner">
+    <div class="fade">
+      <div class="hero-kicker">KGMU · Lucknow, India</div>
+      <h1>Advanced MRI &amp;<br><em>AI-Driven</em> Diagnostics</h1>
+      <p class="hero-lead">Pioneering non-invasive imaging through quantitative MRI, super-resolution deep learning, physics-informed neural networks, and advanced diffusion modeling — for neurological and oncological conditions.</p>
+      <div>
+        <a href="#featured" class="btn-main">Explore Research</a>
+        <a href="https://sites.google.com/view/dwivedilab/publications" target="_blank" class="btn-ghost">Publications</a>
+      </div>
+    </div>
+    <div class="hero-facts fade" style="transition-delay:0.12s;">
+      <div class="fact">
+        <div class="fact-num">9+</div>
+        <div class="fact-label">Active Research Areas</div>
+      </div>
+      <div class="fact">
+        <div class="fact-num">3T</div>
+        <div class="fact-label">MRI Infrastructure</div>
+      </div>
+      <div class="fact">
+        <div class="fact-num">AI</div>
+        <div class="fact-label">Deep Learning Methods</div>
+      </div>
+      <div class="fact">
+        <div class="fact-num">1st</div>
+        <div class="fact-label">Asian HM-MRI Prostate Study</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     NEW RESEARCH BAND
+════════════════════════════════ -->
+<div id="band">
+  <div class="band-inner">
+    <span class="band-tag">New Research 2024–25</span>
+    <div class="band-item"><span class="band-dot"></span>Super-Resolution AI (FSRCNN · SRDenseNet)</div>
+    <div class="band-item"><span class="band-dot"></span>Single-Shell → Multi-Shell dMRI Synthesis</div>
+    <div class="band-item"><span class="band-dot"></span>HM-MRI in Prostate Cancer</div>
+    <div class="band-item"><span class="band-dot"></span>PINNs in Glioma</div>
+    <div class="band-item"><span class="band-dot"></span>PDE-Constrained Tumor Modeling</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     MISSION
+════════════════════════════════ -->
+<section id="mission" class="sec">
+  <div class="wrap">
+    <div class="grid-2">
+      <div class="fade">
+        <div class="eyebrow">Our Mission</div>
+        <h2 style="margin-bottom:1.25rem;">Redefining Cancer &amp; Neurological Imaging</h2>
+        <div class="mission-text">
+          <p>At the Dwivedi Research Lab, King George's Medical University (KGMU) Lucknow, we pioneer advancements in in-vivo MRI, MR spectroscopy, diffusion MRI modeling, and the integration of advanced imaging with AI and deep learning technologies.</p>
+          <p>Our focus is on non-invasive imaging solutions for prostate cancer, glioma, kidney tumors, breast cancer, traumatic brain injuries (TBI), and Alzheimer's disease — with a strong emphasis on clinical translation across India.</p>
+          <p>We embrace a multidisciplinary approach, accentuating personalized medical strategies through the continuous advancement and practical application of MR techniques.</p>
+        </div>
+        <a href="https://sites.google.com/view/dwivedilab/durgesh-dwivedi" target="_blank" class="btn-main" style="display:inline-block;margin-top:1.5rem;">About Dr. Dwivedi</a>
+      </div>
+      <div class="pillars fade" style="transition-delay:0.12s;">
+        <div class="pillar"><div class="p-icon">🔬</div><div><h4>Quantitative MRI</h4><p>mpMRI, ASL, relaxometry, volumetry, and advanced diffusion techniques for precise tissue characterization.</p></div></div>
+        <div class="pillar"><div class="p-icon">🤖</div><div><h4>Artificial Intelligence</h4><p>Radiomics, deep learning, transfer learning, GANs, super-resolution, and physics-informed neural networks.</p></div></div>
+        <div class="pillar"><div class="p-icon sage">🧬</div><div><h4>Radiogenomics</h4><p>Linking imaging phenotypes with genomic and metabolomic signatures for personalized oncology.</p></div></div>
+        <div class="pillar"><div class="p-icon amber">🏥</div><div><h4>Clinical Translation</h4><p>Transitioning novel MR methods into real-world clinical practice across the Indian subcontinent.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     FEATURED RESEARCH
+════════════════════════════════ -->
+<section id="featured" class="sec" style="background:var(--white); border-top:1px solid var(--border);">
+  <div class="wrap">
+    <div class="sec-head fade">
+      <div class="eyebrow">Featured · New Research</div>
+      <h2>Super-Resolution &amp; Physics-Informed AI</h2>
+      <p>Two novel methodological advances at the core of our current research program.</p>
+    </div>
+
+    <!-- SUPER-RESOLUTION -->
+    <div class="feat-card fade">
+      <div style="height:4px; background:linear-gradient(90deg,#0e7490,#22d3ee); grid-column:1/-1;"></div>
+      <div class="feat-body">
+        <span class="feat-tag ft-teal">AI · Super-Resolution · Deep Learning</span>
+        <h3>MRI Super-Resolution: FSRCNN &amp; SRDenseNet</h3>
+        <p>We leverage Fast Super-Resolution Convolutional Neural Networks (FSRCNN) and SRDenseNet architectures to enhance the spatial resolution of diffusion MRI images — without expensive high-field hardware. This approach enables near-3T image quality from standard 1.5T scanners, applied across TBI, prostate, and glioma datasets. Combined with NODDI and DKI diffusion models for enhanced tissue microstructure characterization clinically deployable across India.</p>
+        <div class="badges">
+          <span class="badge b-teal">FSRCNN</span>
+          <span class="badge b-teal">SRDenseNet</span>
+          <span class="badge b-amber">TBI · Prostate · Glioma</span>
+          <span class="badge b-slate">1.5T / 3T MRI</span>
+          <span class="badge b-purple">NODDI · DKI</span>
+          <span class="badge b-sage">Clinical Translation</span>
+        </div>
+      </div>
+      <div class="feat-diag">
+        <div class="diag-title">Super-Resolution Pipeline</div>
+        <div class="d-row">
+          <div class="d-box">Low-Res<br>dMRI<br><span style="font-size:10px;color:var(--ink-mute);">1.5T Input</span></div>
+          <span class="d-arr">→</span>
+          <div class="d-box hi">FSRCNN /<br>SRDenseNet<br><span style="font-size:10px;">Deep CNN</span></div>
+          <span class="d-arr">→</span>
+          <div class="d-box">Hi-Res<br>Output<br><span style="font-size:10px;color:var(--ink-mute);">3T Quality</span></div>
+        </div>
+        <div class="d-grid2" style="margin-top:8px;">
+          <div class="d-box" style="font-size:11px;padding:7px;">Perceptual Loss</div>
+          <div class="d-box" style="font-size:11px;padding:7px;">SSIM · PSNR</div>
+        </div>
+        <div class="d-row" style="margin-top:8px;">
+          <div class="d-box hi" style="font-size:11px;padding:7px;">→ NODDI · DKI Modeling</div>
+        </div>
+        <div class="d-note">Clinically deployable · No hardware upgrade</div>
+      </div>
+    </div>
+
+    <!-- PINNs -->
+    <div class="feat-card fade" style="transition-delay:0.1s; background:#fcfaff;">
+      <div style="height:4px; background:linear-gradient(90deg,#5b21b6,#8b5cf6); grid-column:1/-1;"></div>
+      <div class="feat-body">
+        <span class="feat-tag ft-purple">Physics-Informed Neural Networks · Glioma</span>
+        <h3>PINNs Model for Glioma Diagnostics &amp; Monitoring</h3>
+        <p>Physics-Informed Neural Networks (PINNs) embed biological and physical equations — partial differential equations governing tumor growth, diffusion, and metabolism — directly into the neural network loss function. Applied to multi-parametric glioma MRI (ADC, CBV, FLAIR, DCE), PINNs enable biophysically constrained tumor modeling that ensures physiologically plausible predictions even with limited training data.</p>
+        <div class="badges">
+          <span class="badge b-purple">PINNs</span>
+          <span class="badge b-purple">Tumor Growth PDEs</span>
+          <span class="badge b-teal">qMRI Biomarkers</span>
+          <span class="badge b-slate">Survival Prediction</span>
+          <span class="badge b-amber">Therapy Response</span>
+        </div>
+      </div>
+      <div class="feat-diag" style="background:#f5f3ff;">
+        <div class="diag-title">PINNs Architecture — Glioma</div>
+        <div class="d-box pur" style="text-align:center;margin-bottom:6px;width:100%;">Multimodal MRI Inputs<br><span style="font-size:10px;color:var(--ink-mute);">ADC · CBV · DCE · FLAIR · T2w</span></div>
+        <div class="d-sep">↓</div>
+        <div class="d-box pur" style="text-align:center;margin-bottom:6px;width:100%;">Neural Network + Physics Loss<br><span style="font-size:10px;color:var(--ink-mute);">PDE constraints (reaction-diffusion)</span></div>
+        <div class="d-sep">↓</div>
+        <div class="d-grid2">
+          <div class="d-box pur" style="font-size:11px;">Tumor Grade</div>
+          <div class="d-box pur" style="font-size:11px;">Survival</div>
+          <div class="d-box hi" style="font-size:11px;">Progression</div>
+          <div class="d-box hi" style="font-size:11px;">Therapy Response</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     SINGLE → MULTI-SHELL
+════════════════════════════════ -->
+<section id="diffusion" class="sec">
+  <div class="wrap">
+    <div class="grid-2 dark-grid">
+      <div class="fade">
+        <div class="eyebrow">New Research · Diffusion MRI</div>
+        <h2 style="margin-bottom:1rem;">Single-Shell to Multi-Shell dMRI Synthesis</h2>
+        <p style="margin-bottom:0.9rem;">Advanced diffusion models — NODDI, CHARMED, MAPMRI — require multi-shell acquisitions unavailable in most clinical protocols. We develop AI synthesis models (GANs, score-based diffusion networks) to generate full multi-shell dMRI data from a standard single-shell clinical acquisition (b=1000, 32 directions).</p>
+        <p style="margin-bottom:0.9rem;">This enables NODDI-derived ICVF, ODI, and ISOVF metrics; CHARMED restricted diffusion compartments; and MAPMRI microstructure indices — from routine acquisitions with no protocol changes and no additional scan time.</p>
+        <p style="font-size:14px; color:var(--ink-mute);">Applications: white matter mapping in TBI, glioma microstructure, Alzheimer's neurodegeneration, retrospective analysis of large clinical dMRI databases.</p>
+        <div class="badges" style="margin-top:1.25rem;">
+          <span class="badge b-sage">GANs</span>
+          <span class="badge b-sage">Score-based Models</span>
+          <span class="badge b-teal">NODDI · CHARMED · MAPMRI</span>
+          <span class="badge b-amber">TBI · Glioma · AD</span>
+        </div>
+      </div>
+      <div class="light-diag fade" style="transition-delay:0.12s;">
+        <div class="diag-title">Shell Synthesis Pipeline</div>
+        <div class="shell-row">
+          <div class="shell-key">Single Shell b=1000</div>
+          <div class="balls">
+            <div class="ball" style="width:12px;height:12px;background:#6ee7b7;"></div>
+            <div class="ball" style="width:12px;height:12px;background:#6ee7b7;"></div>
+            <div class="ball" style="width:12px;height:12px;background:#6ee7b7;"></div>
+            <div class="ball" style="width:12px;height:12px;background:#6ee7b7;"></div>
+            <span style="font-size:10px;color:var(--ink-mute);">32 dirs</span>
+          </div>
+        </div>
+        <div style="text-align:center;color:var(--rule);font-size:18px;margin:6px 0;">↓</div>
+        <div class="ai-bridge">AI Synthesis (GAN / Diffusion Network)</div>
+        <div style="text-align:center;color:var(--rule);font-size:18px;margin:6px 0;">↓</div>
+        <div class="shell-row">
+          <div class="shell-key">Multi Shell</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div class="balls">
+              <div class="ball" style="width:10px;height:10px;background:#93c5fd;"></div>
+              <div class="ball" style="width:10px;height:10px;background:#93c5fd;"></div>
+              <span style="font-size:10px;color:var(--ink-mute);">b0</span>
+            </div>
+            <div class="balls">
+              <div class="ball" style="width:12px;height:12px;background:#6ee7b7;"></div>
+              <div class="ball" style="width:12px;height:12px;background:#6ee7b7;"></div>
+              <div class="ball" style="width:12px;height:12px;background:#6ee7b7;"></div>
+              <span style="font-size:10px;color:var(--ink-mute);">b1000 · 64 dirs</span>
+            </div>
+            <div class="balls">
+              <div class="ball" style="width:13px;height:13px;background:#fcd34d;"></div>
+              <div class="ball" style="width:13px;height:13px;background:#fcd34d;"></div>
+              <div class="ball" style="width:13px;height:13px;background:#fcd34d;"></div>
+              <div class="ball" style="width:13px;height:13px;background:#fcd34d;"></div>
+              <span style="font-size:10px;color:var(--ink-mute);">b2000 · 64 dirs</span>
+            </div>
+          </div>
+        </div>
+        <div class="mod-tags">
+          <span class="mod-tag">NODDI</span>
+          <span class="mod-tag">CHARMED</span>
+          <span class="mod-tag">MAPMRI</span>
+          <span class="mod-tag">DKI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     HM-MRI PROSTATE
+════════════════════════════════ -->
+<section id="prostate" class="sec">
+  <div class="wrap">
+    <div class="grid-2 dark-grid">
+      <div class="fade">
+        <div class="eyebrow">New Research · Prostate Cancer</div>
+        <h2 style="margin-bottom:1rem;">Hybrid Multi-dimensional MRI in Prostate Cancer</h2>
+        <p style="margin-bottom:0.9rem;">Hybrid Multi-dimensional MRI (HM-MRI) simultaneously encodes T1, T2, and diffusion contrasts in a single acquisition — enabling comprehensive, co-registered tissue composition maps of the prostate gland unavailable from conventional sequential mpMRI.</p>
+        <p style="margin-bottom:0.9rem;">Our ongoing work is the <strong style="color:var(--amber);">first study of its kind in the Asian population</strong> — non-invasively characterizing water, lipid, and fibrosis fractions to guide biopsy decisions and address the multi-focality and molecular heterogeneity of prostate cancer.</p>
+        <p style="font-size:14px;color:var(--ink-mute);">Directly addresses clinical challenges of PSA overdiagnosis, random biopsy errors, and software fusion biopsy device limitations.</p>
+        <div class="badges" style="margin-top:1.25rem;">
+          <span class="badge b-amber">HM-MRI</span>
+          <span class="badge b-sage">Tissue Composition</span>
+          <span class="badge b-teal">T1 · T2 · Diffusion</span>
+          <span class="badge b-rose">First Asian Study</span>
+          <span class="badge b-purple">AI-Assisted Analysis</span>
+        </div>
+      </div>
+      <div class="light-diag fade" style="transition-delay:0.12s; background:#fffbf0; border-color:#fde68a;">
+        <div class="diag-title">HM-MRI Acquisition &amp; Output</div>
+        <div class="hm-item">
+          <div class="hm-ico" style="background:#dbeafe;">🔵</div>
+          <div><div class="hm-t">T1 Contrast</div><div class="hm-s">Anatomical structure · Tissue typing</div></div>
+        </div>
+        <div class="hm-plus">+</div>
+        <div class="hm-item">
+          <div class="hm-ico" style="background:#d8f3dc;">🟢</div>
+          <div><div class="hm-t">T2 Contrast</div><div class="hm-s">Zonal anatomy · Lesion detection</div></div>
+        </div>
+        <div class="hm-plus">+</div>
+        <div class="hm-item">
+          <div class="hm-ico" style="background:#fef3c7;">🟡</div>
+          <div><div class="hm-t">Diffusion Contrast</div><div class="hm-s">Cell density · Tumor microstructure</div></div>
+        </div>
+        <div class="hm-plus">↓</div>
+        <div class="hm-result">
+          <div class="hm-rt">Tissue Composition Map</div>
+          <div class="hm-rs">Water · Lipid · Fibrosis fractions → Non-invasive biopsy guidance</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     ALL PROJECTS
+════════════════════════════════ -->
+<section id="projects" class="sec">
+  <div class="wrap">
+    <div class="sec-head fade">
+      <div class="eyebrow">All Active Projects</div>
+      <h2>Complete Research Portfolio</h2>
+      <p>Spanning neuro-oncology, prostate, breast cancer, Alzheimer's disease, TBI, and beyond.</p>
+    </div>
+    <div class="grid-auto">
+      <div class="r-card fade" style="--accent-color:#0e7490; --ico-bg:#e0f2fe;">
+        <div class="r-ico">🧠</div>
+        <h3>qMRI &amp; AI for Glioma Diagnostics</h3>
+        <p>ML/DL algorithms analyze multimodal quantitative MRI (ADC, CBV, contrast enhancement) to differentiate low vs. high-grade gliomas, predict survival, and monitor therapy response — combined with PINNs for biophysically constrained modeling.</p>
+        <div class="rbadges"><span class="badge b-purple">Deep Learning</span><span class="badge b-teal">qMRI</span><span class="badge b-slate">PINNs</span></div>
+      </div>
+      <div class="r-card fade" style="--accent-color:#b45309; --ico-bg:#fef3c7; transition-delay:0.06s;">
+        <div class="r-ico">📡</div>
+        <h3>Multiparametric MRI in Prostate Cancer</h3>
+        <p>Integrating mpMRI (DWI, DCE, T2w) with AI-assisted radiomics for targeted biopsy guidance. HM-MRI tissue composition mapping for detecting clinically significant PCa while reducing unnecessary biopsies.</p>
+        <div class="rbadges"><span class="badge b-teal">mpMRI</span><span class="badge b-amber">HM-MRI</span><span class="badge b-sage">Radiomics</span></div>
+      </div>
+      <div class="r-card fade" style="--accent-color:#dc2626; --ico-bg:#ffe4e6; transition-delay:0.12s;">
+        <div class="r-ico">⚡</div>
+        <h3>TBI: Diffusion &amp; Super-Resolution</h3>
+        <p>FSRCNN/SRDenseNet super-resolution combined with NODDI and DKI multi-compartment diffusion modeling for TBI assessment — capturing crossing fiber tracts damaged in trauma without high-field scanners.</p>
+        <div class="rbadges"><span class="badge b-rose">TBI</span><span class="badge b-teal">NODDI · DKI</span><span class="badge b-slate">SR</span></div>
+      </div>
+      <div class="r-card fade" style="--accent-color:#0891b2; --ico-bg:#e0f2fe; transition-delay:0.06s;">
+        <div class="r-ico">🧬</div>
+        <h3>Radiogenomics in Renal Cell Carcinoma</h3>
+        <p>Fusing radiomics, metabolomics, and radiogenomics with deep learning for RCC analysis. Uncovers imaging-genomic patterns for improved renal tumor diagnosis and personalized treatment.</p>
+        <div class="rbadges"><span class="badge b-teal">Radiogenomics</span><span class="badge b-purple">Deep Learning</span><span class="badge b-amber">RCC</span></div>
+      </div>
+      <div class="r-card fade" style="--accent-color:#5b21b6; --ico-bg:#ede9fe; transition-delay:0.12s;">
+        <div class="r-ico">🔍</div>
+        <h3>Alzheimer's Disease: mpMRI &amp; Transfer Learning</h3>
+        <p>Cortical/subcortical morphometry, tractography (hippocampal FA), and metabolic alterations (NAA/myo-inositol via MRS) analyzed with Freesurfer, LCModel, DSI Studio, and in-house transfer learning.</p>
+        <div class="rbadges"><span class="badge b-amber">Alzheimer's</span><span class="badge b-purple">Transfer Learning</span><span class="badge b-teal">MRS · DTI</span></div>
+      </div>
+      <div class="r-card fade" style="--accent-color:#be185d; --ico-bg:#ffe4e6; transition-delay:0.06s;">
+        <div class="r-ico">🎗️</div>
+        <h3>AI &amp; mpMRI in Breast Cancer</h3>
+        <p>AI-assisted radiomics and mpMRI for detecting additional tumor foci in ipsilateral and contralateral breast — improving staging beyond standard mammography for suspicious clinical findings.</p>
+        <div class="rbadges"><span class="badge b-rose">Breast Cancer</span><span class="badge b-purple">Radiomics</span><span class="badge b-teal">mpMRI</span></div>
+      </div>
+      <div class="r-card fade" style="--accent-color:#64748b; --ico-bg:#f1f5f9; transition-delay:0.12s;">
+        <div class="r-ico">🦴</div>
+        <h3>Computer Vision for Osteoporosis</h3>
+        <p>Affordable AI-based bone health screening device for primary healthcare centres in India. Assesses bone density and microstructure without DXA hardware — designed for rural deployment.</p>
+        <div class="rbadges"><span class="badge b-teal">Computer Vision</span><span class="badge b-amber">Osteoporosis</span><span class="badge b-slate">Point-of-Care</span></div>
+      </div>
+      <div class="r-card fade" style="--accent-color:#0e7490; --ico-bg:#e0f2fe; transition-delay:0.06s;">
+        <div class="r-ico">🏥</div>
+        <h3>MASLD &amp; Emerging MR Methods</h3>
+        <p>Investigations into Metabolic Dysfunction-Associated Steatotic Liver Disease (MASLD), resting-state fMRI, and MR spectroscopy in neurological conditions — expanding the lab's imaging portfolio.</p>
+        <div class="rbadges"><span class="badge b-sage">MASLD</span><span class="badge b-teal">rfMRI · MRS</span><span class="badge b-slate">Emerging</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     CONTACT
+════════════════════════════════ -->
+<section id="contact" class="sec">
+  <div class="wrap">
+    <div class="grid-2 contact-grid">
+      <div class="fade">
+        <div class="eyebrow">Connect With Us</div>
+        <h2 style="margin-bottom:1rem;">Collaborations &amp; Enquiries</h2>
+        <p style="margin-bottom:1.5rem;">We welcome collaborations with clinicians, engineers, and researchers in imaging, oncology, and neurology. Open positions for motivated students and postdoctoral fellows.</p>
+        <div class="ci-row"><div class="ci-ico">🏛️</div><div><div class="ci-label">Institution</div><div class="ci-val">King George's Medical University (KGMU), Lucknow, UP, India</div></div></div>
+        <div class="ci-row"><div class="ci-ico">👨‍🔬</div><div><div class="ci-label">Principal Investigator</div><div class="ci-val"><a href="https://sites.google.com/view/dwivedilab/durgesh-dwivedi" target="_blank">Dr. Durgesh Dwivedi →</a></div></div></div>
+        <div class="ci-row"><div class="ci-ico">🌐</div><div><div class="ci-label">Main Website</div><div class="ci-val"><a href="https://sites.google.com/view/dwivedilab" target="_blank">sites.google.com/view/dwivedilab →</a></div></div></div>
+        <div class="ci-row"><div class="ci-ico">📄</div><div><div class="ci-label">Publications</div><div class="ci-val"><a href="https://sites.google.com/view/dwivedilab/publications" target="_blank">View all publications →</a></div></div></div>
+      </div>
+      <div class="join-panel fade" style="transition-delay:0.12s;">
+        <h3>Join the Lab</h3>
+        <p>We are looking for passionate individuals to join our multidisciplinary imaging and AI research team.</p>
+        <div class="positions">
+          <div class="pos"><span class="pos-dot"></span>PhD Research Scholars (MRI / AI / Medical Physics)</div>
+          <div class="pos"><span class="pos-dot"></span>Junior Research Fellows (JRF)</div>
+          <div class="pos"><span class="pos-dot"></span>Postdoctoral Fellows</div>
+          <div class="pos"><span class="pos-dot"></span>Clinical Collaborators (Radiology / Oncology / Neurology)</div>
+          <div class="pos"><span class="pos-dot"></span>International Visiting Researchers</div>
+        </div>
+        <a href="https://sites.google.com/view/dwivedilab/student-job" target="_blank" class="btn-main">View Open Positions</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     FOOTER
+════════════════════════════════ -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">KGMU · Dwivedi Research Lab</div>
+      <p class="footer-desc">Advanced MRI and AI-driven diagnostics for neurological and oncological conditions. King George's Medical University, Lucknow, India.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Research</h4>
+      <a href="#featured">Super-Resolution AI</a>
+      <a href="#featured">PINNs in Glioma</a>
+      <a href="#diffusion">Single→Multi-Shell dMRI</a>
+      <a href="#prostate">HM-MRI Prostate</a>
+      <a href="#projects">All Projects</a>
+    </div>
+    <div class="footer-col">
+      <h4>Lab</h4>
+      <a href="https://sites.google.com/view/dwivedilab/durgesh-dwivedi" target="_blank">Dr. Durgesh Dwivedi</a>
+      <a href="https://sites.google.com/view/dwivedilab/team" target="_blank">Team</a>
+      <a href="https://sites.google.com/view/dwivedilab/publications" target="_blank">Publications</a>
+      <a href="https://sites.google.com/view/dwivedilab/media" target="_blank">Media</a>
+      <a href="https://sites.google.com/view/dwivedilab/contact" target="_blank">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Dwivedi Research Lab, KGMU Lucknow. All rights reserved.</span>
+    <span class="footer-copy">Advanced MRI · AI Diagnostics · Lucknow, India</span>
+  </div>
+</footer>
+
+<script>
+// Mobile nav
+const ham = document.getElementById('ham');
+const navlinks = document.getElementById('navlinks');
+ham.addEventListener('click', () => navlinks.classList.toggle('open'));
+document.querySelectorAll('#navlinks a').forEach(a => a.addEventListener('click', () => navlinks.classList.remove('open')));
+
+// Scroll fade-in
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
